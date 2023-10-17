@@ -1,0 +1,5 @@
+tarpit
+.env
+__pycache__
+.*.sw?
+venv
