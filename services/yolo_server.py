@@ -1,15 +1,13 @@
 import logging
+import time
+import collections
+import numpy as np
+import multiprocessing as mp
 from PIL import Image
 from ultralytics import YOLO
-import requests
-import time
+from zero import ZeroServer
 
-import urllib3
-urllib3.disable_warnings()
-
-import collections
-from typing import List
-import numpy as np
+app = ZeroServer(port=5559)
 
 class PeopleCounter:
     def __init__(self, window_size, max_people=10, false_positive_rate=0.1, false_negative_rate=0.1):
@@ -86,7 +84,7 @@ class PeopleCounter:
         else:
             return confidence * self.detection_prob_given_person
 
-def run_yolo():
+def run_yolo(person_count):
     logging.getLogger('ultralytics').setLevel(logging.WARN)
     host = 'yolo.lan'
     base_url = f'https://{host}'
@@ -112,21 +110,41 @@ def run_yolo():
     read_cycle = 1
 
     while True:
-        #capture()
         for result in results:
             now = time.time()
             result = result.cpu().numpy()
             cls_conf = list(zip(result.boxes.cls, result.boxes.conf))
-            #conf_list = [it[1] for it in cls_conf if (it[0] == person_cls) and (it[1] > conf_cutoff)]
             conf_list = [it[1] for it in cls_conf if (it[0] == person_cls)]
             counter.add_observation(conf_list)
             if (time.time() - last_read) >= read_cycle:
                 ma_count = counter.get_count()
                 #print(f'{ma_count} humans')
                 if ma_count != last_ma_count:
+                    person_count.value = ma_count
                     print(f'{ma_count} humans')
                     last_ma_count = ma_count
                 last_read = time.time()
             sleep_delay = delay - (time.time() - now)
             if sleep_delay:
                 time.sleep(sleep_delay)
+
+class YoloWorker(mp.Process):
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+        self.person_count = mp.Value('i', 0)
+
+    def get_person_count(self):
+        return self.person_count.value
+
+    def run(self):
+        print('Starting YOLO')
+        run_yolo(self.person_count)
+
+@app.register_rpc
+def get_person_count() -> int:
+    return app.yolo_worker.get_person_count()
+
+if __name__ == "__main__":
+    app.yolo_worker = YoloWorker()
+    app.yolo_worker.start()
+    app.run(workers=1)
