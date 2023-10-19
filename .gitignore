@@ -3,3 +3,4 @@ tarpit
 __pycache__
 .*.sw?
 venv
+*.pt
