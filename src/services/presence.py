@@ -1,5 +1,4 @@
 from . service import Service, ServiceClient
-from .. engine.yolo import YoloWorker
 
 class PresenceService(Service):
     ServiceName = "presence"
@@ -15,6 +14,8 @@ def get_person_count() -> int:
     return yolo_worker.get_person_count()
 
 def start_service():
+    from .. engine.yolo import YoloWorker
+
     global yolo_worker
     yolo_worker = YoloWorker()
     yolo_worker.start()
