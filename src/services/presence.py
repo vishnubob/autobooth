@@ -5,9 +5,6 @@ import numpy as np
 import multiprocessing as mp
 from PIL import Image
 from ultralytics import YOLO
-from zero import ZeroServer
-
-app = ZeroServer(port=5559)
 
 class PeopleCounter:
     def __init__(self, window_size, max_people=10, false_positive_rate=0.1, false_negative_rate=0.1):
@@ -140,11 +137,25 @@ class YoloWorker(mp.Process):
         print('Starting YOLO')
         run_yolo(self.person_count)
 
-@app.register_rpc
+class PresenceService(Service):
+    ServiceName = "presence"
+
+class PresenceClient(ServiceClient):
+    ServiceName = "presence"
+    DefaultTimeout = 1000 * 60 * 2
+    
+yolo_worker = None
+
 def get_person_count() -> int:
-    return app.yolo_worker.get_person_count()
+    global yolo_worker
+    return yolo_worker.get_person_count()
+
+def start_service():
+    global yolo_worker
+    yolo_worker = YoloWorker()
+    yolo_worker.start()
+    service = YoloService()
+    service.start(register_rpc=(get_person_count, ))
 
 if __name__ == "__main__":
-    app.yolo_worker = YoloWorker()
-    app.yolo_worker.start()
-    app.run(workers=1)
+    start_service()

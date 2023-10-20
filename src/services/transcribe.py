@@ -1,7 +1,16 @@
 import os
-from redis import Redis
-from rq import Worker
+import multiprocessing as mp
 import speech_recognition as sr
+import openai
+from . service import Service, ServiceClient
+
+energy_threshold = None
+microphone_index = None
+
+def transcribe_audio(audio_file_path=None, model_name='whisper-1'):
+    with open(audio_file_path, "rb") as fh:
+        response = openai.Audio.transcribe(model_name, fh)
+    return response["text"]
 
 def get_microphone_index():
     matches = [(idx, nm) for (idx, nm) in enumerate(sr.Microphone.list_microphone_names()) if 'USB' in nm]
@@ -37,3 +46,26 @@ def listen(sample_rate=44100, energy_threshold=None, microphone_index=None):
         f.write(audio.get_wav_data())
 
     return os.path.abspath(audio_file_path)
+
+class TranscribeService(Service):
+    ServiceName = "transcribe"
+
+class TranscribeClient(ServiceClient):
+    ServiceName = "transcribe"
+    DefaultTimeout = 1000 * 60 * 2
+
+def transcribe() -> str:
+    global energy_threshold, microphone_index
+
+    audio_path = listen(energy_threshold=energy_threshold, microphone_index=microphone_index)
+    return transcribe_audio(audio_path)
+
+def start_service():
+    global energy_threshold, microphone_index
+    energy_threshold = get_energy_threshold()
+    microphone_index = get_microphone_index()
+    service = TranscribeService()
+    service.start(register_rpc=(transcribe, ))
+
+if __name__ == "__main__":
+    start_service()
