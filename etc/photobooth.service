@@ -4,7 +4,7 @@ Description=photobooth
 [Service]
 WorkingDirectory=/home/ghall/code/photobooth
 User=ghall
-ExecStart=/home/ghall/code/photobooth/venv/bin/supervisord
+ExecStart=supervisord
 
 [Install]
 WantedBy=multi-user.target
