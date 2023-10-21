@@ -1,0 +1,18 @@
+2023-10-21 18:47:14,746 INFO daemonizing the supervisord process
+2023-10-21 18:47:14,747 INFO set current directory: '/home/ghall/code/autobooth'
+2023-10-21 18:47:14,748 INFO supervisord started with pid 65890
+2023-10-21 18:47:15,752 INFO spawned: 'speech_service' with pid 65911
+2023-10-21 18:47:16,754 INFO success: speech_service entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2023-10-21 18:47:40,333 WARN exited: speech_service (terminated by SIGTERM; not expected)
+2023-10-21 18:47:40,336 INFO spawned: 'speech_service' with pid 65987
+2023-10-21 18:47:41,338 INFO success: speech_service entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2023-10-21 18:48:17,941 WARN received SIGTERM indicating exit request
+2023-10-21 18:48:17,941 INFO waiting for speech_service to die
+2023-10-21 18:48:18,943 WARN stopped: speech_service (terminated by SIGTERM)
+2023-10-21 18:49:25,410 INFO supervisord started with pid 66313
+2023-10-21 18:49:26,412 INFO spawnerr: can't find command 'bin/start_service.sh'
+2023-10-21 18:49:27,414 INFO spawnerr: can't find command 'bin/start_service.sh'
+2023-10-21 18:49:29,417 INFO spawnerr: can't find command 'bin/start_service.sh'
+2023-10-21 18:49:32,421 INFO spawnerr: can't find command 'bin/start_service.sh'
+2023-10-21 18:49:32,421 INFO gave up: speech_service entered FATAL state, too many start retries too quickly
+2023-10-21 18:49:35,425 WARN received SIGINT indicating exit request

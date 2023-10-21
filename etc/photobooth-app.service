@@ -1,0 +1,10 @@
+[Unit]
+Description=photobooth
+
+[Service]
+WorkingDirectory=/home/ghall/code/photobooth
+User=ghall
+ExecStart=/home/ghall/code/photobooth/venv/bin/supervisord
+
+[Install]
+WantedBy=multi-user.target

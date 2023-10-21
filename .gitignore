@@ -6,3 +6,4 @@ venv
 *.pt
 *.pyc
 audio
+supervisord.*
