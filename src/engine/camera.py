@@ -120,7 +120,6 @@ class Camera(object):
 
     def open(self, name=None):
         camlist = list(self.api.camera_autodetect())
-        print(camlist)
         if len(camlist) == 0:
             raise ValueError("no cameras found")
         if name is None:
