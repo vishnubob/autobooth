@@ -2,6 +2,7 @@
 Description=photobooth
 
 [Service]
+Environment="HOSTNAME=%H"
 WorkingDirectory=/home/ghall/code/photobooth
 User=ghall
 ExecStart=supervisord
