@@ -1,5 +1,4 @@
 from . service import Service, ServiceClient
-from .. engine.display import init_display, display_text, display_image
 
 class DisplayService(Service):
     ServiceName = "display"
@@ -23,7 +22,7 @@ display_engine = None
 """
 
 def start_service():
-    #global display_engine
+    from .. engine.display import init_display, display_text, display_image
     init_display()
     service = DisplayService()
     service.start(register_rpc=(display_text, display_image))

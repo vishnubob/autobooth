@@ -1,42 +1,44 @@
-from redis import Redis
-from rq import SimpleWorker, Queue
 import random
 import time
-import jobs
-import prompts
-import chat
 
-def wait_on(job, poll=1):
-    while True:
-        job.refresh()
-        if job.result is not None:
-            return
-        time.sleep(poll)
+from . import chat
+from . import prompts
+from . services.presence import PresenceClient
+from . services.camera import CameraClient
+from . services.display import DisplayClient
+from . services.speech import SpeechClient
+from . services.transcribe import TranscribeClient
 
-def call(func, *args, **kw):
-    job = queue.enqueue(func, *args, **kw)
-    wait_on(job)
-    return job.return_value()
+presence_service = PresenceClient()
+camera_service = CameraClient()
+display_service = DisplayClient()
+speech_service = SpeechClient()
+transcribe_service = TranscribeClient()
+
+def get_person_count():
+    return presence_service("get_person_count", None)
+
+def speak(text):
+    return speech_service("speak", text)
 
 def transcribe():
-    audio_file_path = call(
-        jobs.listen.listen, 
-        energy_threshold=energy_threshold,
-        microphone_index=microphone_index
-    )
-    text = call(jobs.transcribe.transcribe, audio_file_path=audio_file_path)
-    return text
+    return transcribe_service("transcribe", None)
 
-def run_dialog():
+def capture():
+    return camera_service("capture", None)
+
+def display_image(img_fn):
+    return display_service("display_image", img_fn)
+
+def run_dialog(person_count=None):
     prompt_list = prompts.list_prompts()
     mode = random.choice(prompt_list)
     mode = 'banter'
     prompt = prompts.get_prompt(mode)
-    count = random.choice(['one', 'two', 'three', 'four', 'five', 'six'])
 
     messages = [
         {"role": "system", "content": prompt},
-        {"role": "system", "content": f"{count} participants are present"},
+        {"role": "system", "content": f"{person_count} participants are present"},
     ]
 
     while True:
@@ -47,15 +49,25 @@ def run_dialog():
             #bg_model = GenerateBackground.from_response(result)
             #bg = bg_model()
             #display(bg)
+            img_fn = capture()
+            display_image(img_fn)
             messages.append({'role': 'system', 'content': 'Picture taken and image generated'})
         else:
             msg = response['content']
             print(msg)
-            jobs.speak.speak(response['content'])
+            speak(msg)
             response = transcribe()
             messages.append({'role': 'user', 'content': response})
 
-queue = Queue(connection=Redis())
-microphone_index = call(jobs.listen.get_microphone_index)
-energy_threshold = call(jobs.listen.get_energy_threshold)
-run_dialog()
+
+def run():
+    while True:
+        print("loop")
+        person_count = get_person_count()
+        if person_count > 0:
+            run_dialog(person_count=person_count)
+        else:
+            time.sleep(1)
+
+if __name__ == "__main__":
+    run()

@@ -1,3 +1,4 @@
+import os
 from . service import Service, ServiceClient
 
 class SpeechService(Service):
@@ -7,6 +8,10 @@ class SpeechClient(ServiceClient):
     ServiceName = "speech"
     DefaultTimeout = 1000 * 60 * 2
     
+def play_mp3(fn):
+    cmd = f'mpg123 {fn}'
+    os.system(cmd)
+
 def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
     from google.cloud import texttospeech as tts
     from playsound import playsound
@@ -27,11 +32,12 @@ def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
         input=synthesis_input, voice=voice, audio_config=audio_config
     )
 
-    output_fn = '/tmp/tts.wav'
+    output_fn = '/tmp/tts.mp3'
     with open(output_fn, "wb") as out:
         out.write(response.audio_content)
 
     playsound(output_fn)
+    #play_mp3(output_fn)
 
 def speak(text: str) -> bool:
     do_speak(text)
