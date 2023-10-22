@@ -9,18 +9,20 @@ if [ "$#" -ne 1 ]; then
 fi
 
 service_name=$1
-source $PHOTOBOOTH_ROOT/venv/bin/activate
+if [ -e "$PHOTOBOOTH_ROOT/venv/bin/activate" ]; then
+    source $PHOTOBOOTH_ROOT/venv/bin/activate
+fi
 cd $PHOTOBOOTH_ROOT
 
 # Validate service name
 case $service_name in
-    speech|camera|transcribe|display)
+    speech|camera|transcribe|display|presence)
         # Start the corresponding service
-        python -m src.services.$service_name
+        python3 -m src.services.$service_name
         ;;
     *)
         # Invalid service name provided
-        echo "Error: Unknown service name '$service_name'. Supported services are: speech, camera, transcribe."
+        echo "Error: Unknown service name '$service_name'. Supported services are: speech, camera, transcribe, display, presence"
         exit 2
         ;;
 esac

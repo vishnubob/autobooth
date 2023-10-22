@@ -1,6 +1,3 @@
-from google.cloud import texttospeech as tts
-from zero import ZeroServer
-from playsound import playsound
 from . service import Service, ServiceClient
 
 class SpeechService(Service):
@@ -11,6 +8,9 @@ class SpeechClient(ServiceClient):
     DefaultTimeout = 1000 * 60 * 2
     
 def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
+    from google.cloud import texttospeech as tts
+    from playsound import playsound
+
     client = tts.TextToSpeechClient()
     synthesis_input = tts.SynthesisInput(text=text)
 
