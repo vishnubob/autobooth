@@ -25,13 +25,27 @@ camera_frontend = None
 def capture() -> str:
     global camera_frontend
     image_path = new_capture_filename()
-    camera_frontend.capture(copy=True, fn_target=image_path)
+    for retry in range(5):
+        try:
+            camera_frontend.capture(copy=True, fn_target=image_path)
+            break
+        except:
+            camera_frontend = init_camera(reset=True)
+    else:
+        raise ValueError("Camera is borked")
     return image_path
 
-def init_camera():
+def reset_camera():
+    usb_path = camera.canon_path()
+    reset_usb(usb_path)
+
+def init_camera(reset=False):
     global camera_object, camera_frontend
+    if reset:
+        reset_camera()
     camera_object = camera.Camera()
     camera_frontend = camera_object.open(name='canon')
+    return camera_frontend
 
 def start_service():
     init_camera()
