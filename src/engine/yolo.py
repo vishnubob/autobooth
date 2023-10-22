@@ -81,6 +81,29 @@ class PeopleCounter:
         else:
             return confidence * self.detection_prob_given_person
 
+class TimeoutValue:
+    def __init__(self, timeout=5):
+        self.timeout = timeout
+        self.current_value = 0
+        self.last_value = 0
+        self.timestamp = None
+
+    def set_value(self, value):
+        self.last_value = self.current_value
+        self.current_value = value
+        self.timestamp = time.time()
+
+    def get_value(self):
+        # if timestamp hasn't been set, it means set_value hasn't been called yet
+        if self.timestamp is None:
+            return self.current_value
+
+        elapsed_time = time.time() - self.timestamp
+        if elapsed_time < self.timeout:
+            return self.last_value
+        else:
+            return self.current_value
+
 def run_yolo(person_count):
     logging.getLogger('ultralytics').setLevel(logging.WARN)
     host = 'yolo.lan'
@@ -94,6 +117,7 @@ def run_yolo(person_count):
     rtsp_url = f'rtsp://{host}:8554/unicast'
 
     model = YOLO(model_fn)
+    to_value = TimeoutValue()
 
     fps = 5
     delay = 1 / fps
@@ -114,12 +138,8 @@ def run_yolo(person_count):
             conf_list = [it[1] for it in cls_conf if (it[0] == person_cls)]
             counter.add_observation(conf_list)
             if (time.time() - last_read) >= read_cycle:
-                ma_count = counter.get_count()
-                #print(f'{ma_count} humans')
-                if ma_count != last_ma_count:
-                    person_count.value = ma_count
-                    print(f'{ma_count} humans')
-                    last_ma_count = ma_count
+                to_value.set_value(counter.get_count())
+                person_count.value = to_value.get_value()
                 last_read = time.time()
             sleep_delay = delay - (time.time() - now)
             if sleep_delay:

@@ -7,3 +7,4 @@ venv
 *.pyc
 audio
 supervisord.*
+logs
