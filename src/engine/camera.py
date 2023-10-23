@@ -239,7 +239,8 @@ class CameraFrontend(object):
             fn_target = os.path.join(prefix, fn_target)
         print('Copying image to %s' % fn_target)
         camera_file = self.camera.file_get(file_path.folder, file_path.name, gphoto2.GP_FILE_TYPE_NORMAL)
-        self.camera.api.file_save(camera_file, fn_target)
+        camera_file.save(fn_target)
+        #self.camera.api.file_save(camera_file, fn_target)
         self.last_image = fn_target
         return fn_target
     
