@@ -5,9 +5,6 @@ from typing import Optional, List
 class Preamble(BaseModel):
     text: str
 
-    class Config:
-        allow_mutation = False
-
     def __init__(self, text: str):
         super().__init__(text=' '.join([it for it in text.split('\n') if it.strip()]))
 
@@ -24,7 +21,7 @@ class AssistantMessage(BaseModel):
 
 # UserMessage model
 class UserMessage(BaseModel):
-    message: str
+    message: Optional[str] = Field(None)
     people_count: int
 
 # Step model

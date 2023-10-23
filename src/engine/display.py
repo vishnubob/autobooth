@@ -68,11 +68,12 @@ class DisplayController(object):
         self.refresh = None
 
     def display_image(self, fn_img):
+        print("Displaying image", fn_img)
         img = pg.image.load(fn_img)
         img = pg.transform.scale(img, self.canvas.size)
         screen_rect = self.canvas.screen.get_rect()
         rect = img.get_rect(center=(screen_rect.centerx, screen_rect.centery))
-        self.buffer.fill(pg.Color("red"))
+        self.buffer.fill(pg.Color("black"))
         self.buffer.blit(img, rect)
 
     def display_text(self, text):
