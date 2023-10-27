@@ -22,6 +22,7 @@ class PhotoboothDialog:
     def generate_response(self):
         completion = openai.ChatCompletion.create(
             model="gpt-4-0613",
+            #model="gpt-3.5-turbo-0613",
             temperature=1.0,
             messages=self.messages,
         )

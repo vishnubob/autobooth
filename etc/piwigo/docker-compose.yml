@@ -1,0 +1,38 @@
+version: "2.1"
+services:
+  piwigo:
+    image: lscr.io/linuxserver/piwigo:latest
+    restart: always
+    container_name: piwigo
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Etc/UTC
+    volumes:
+      - /nfs:/nfs
+      - /nfs/photobooth/piwigo/config:/config
+      - /nfs/photobooth/gallery:/gallery
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'piwigo'
+      MYSQL_USER: 'photobooth'
+      MYSQL_PASSWORD: 'photobooth'
+      MYSQL_ROOT_PASSWORD: 'photobooth'
+    ports:
+      - 3306:3306
+    volumes:
+      - /nfs/photobooth/mysql:/var/lib/mysql
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes: 
+      - /nfs/photobooth/redis:/data

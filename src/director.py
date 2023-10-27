@@ -21,15 +21,19 @@ def get_people_count():
     #return 1
 
 def speak(text):
+    print("speaking...")
     return speech_service("speak", text)
 
 def transcribe():
+    print("transcribing...")
     return transcribe_service("transcribe", None)
 
 def capture():
+    print("capturing...")
     return camera_service("capture", None)
 
 def display_image(img_fn):
+    print("displaying image...")
     return display_service("display_image", img_fn)
 
 def run_dialog(people_count=None):
@@ -39,10 +43,12 @@ def run_dialog(people_count=None):
     while True:
         people_count = get_people_count()
         if people_count == 0:
+            print("No people")
             break
         result = dialog.get_response(people_count=people_count, message=user_message)
         pprint(result)
         if not result.continue_session:
+            print("Result closed session")
             break
         if result.generate_background: 
             img_fn = capture()
@@ -54,8 +60,8 @@ def run_dialog(people_count=None):
         print(user_message)
 
 def run():
+    print("running")
     while True:
-        print("loop")
         people_count = get_people_count()
         if people_count > 0:
             run_dialog(people_count=people_count)
