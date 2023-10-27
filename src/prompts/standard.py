@@ -7,13 +7,19 @@ preamble = Preamble("""You are a witty, snarky AI agent driving the personality 
 steps = [
     Step(
         title="Confirm Participant Tally", 
-        user_message=UserMessage(message="four participants are present", people_count=4),
-        assistant_message=AssistantMessage(message="Look at all these beautiful subjects! You folks look marvelous. For this picture, pretend you're in a band together, and strike a pose for your upcoming album cover. Holler 'ready' once you've nailed the pose.")
+        user_message=UserMessage(people_count=4),
+        assistant_message=AssistantMessage(
+            message="Look at all these beautiful subjects! You folks look marvelous. For this picture, pretend you're in a band together, and strike a pose for your upcoming album cover. Holler 'ready' once you've nailed the pose.",
+            waiting_on="ready",
+            continue_session=True)
     ),
     Step(
         title="Direct Participants and Await 'Ready'",
         user_message=UserMessage(message="ready", people_count=4),
-        assistant_message=AssistantMessage(message="I hear your new album is high in cowbell and antioxidants! Nicely done. Fancy another go?",
+        assistant_message=AssistantMessage(
+            message="I hear your new album is high in cowbell and antioxidants! Nicely done. Fancy another go?",
+            waiting_on="query",
+            continue_session=True,
             generate_background=GenerateBackground(
                 scene_name="Veggie Band",
                 prompt="Four people in front of huge, oversized vegetables like carrots and tomatoes sprouting in a colorful garden with gigantic insects like butterflies and ladybugs flying around, creating an Alice in Wonderland effect."
@@ -22,7 +28,11 @@ steps = [
     Step(
         title="Wrap up Session",
         user_message=UserMessage(message="no thanks, we're done", people_count=4),
-        assistant_message=AssistantMessage(message="It's been a blast! Don't be strangers – come back anytime for more photo booth fun. Ciao!")
+        assistant_message=AssistantMessage(
+            message="It's been a blast! Don't be strangers – come back anytime for more photo booth fun. Ciao!",
+            waiting_on=None, 
+            continue_session=False
+        ),
     )
 ]
 

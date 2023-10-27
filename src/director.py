@@ -51,12 +51,15 @@ def run_dialog(people_count=None):
             print("Result closed session")
             break
         if result.generate_background: 
-            img_fn = capture()
+            #img_fn = capture()
             prompt = result.generate_background.prompt
             comp_fn = generate_composite(img_fn, prompt)
             display_image(comp_fn)
         speak(result.message)
         user_message = transcribe()
+        if result.waiting_on == "ready":
+            img_fn = capture()
+            user_message = "ready"
         print(user_message)
 
 def run():

@@ -17,6 +17,7 @@ class GenerateBackground(BaseModel):
 class AssistantMessage(BaseModel):
     message: str
     continue_session: bool = Field(True)
+    waiting_on: Optional[str] = Field(None)
     generate_background: Optional[GenerateBackground] = Field(None)
 
 # UserMessage model
