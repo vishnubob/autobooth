@@ -56,10 +56,12 @@ def run_dialog(people_count=None):
             comp_fn = generate_composite(img_fn, prompt)
             display_image(comp_fn)
         speak(result.message)
-        user_message = transcribe()
         if result.waiting_on == "ready":
+            transcribe()
             img_fn = capture()
             user_message = "ready"
+        else:
+            user_message = transcribe()
         print(user_message)
 
 def run():

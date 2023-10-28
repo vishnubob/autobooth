@@ -38,7 +38,10 @@ def listen(sample_rate=16000, energy_threshold=None, microphone_index=None):
             recognizer.adjust_for_ambient_noise(source)
         else:
             recognizer.energy_threshold = energy_threshold
-        audio = recognizer.listen(source)
+        try:
+            audio = recognizer.listen(source, timeout=10)
+        except:
+            return ''
 
     folder = "./audio"
     filename = "microphone-results"
