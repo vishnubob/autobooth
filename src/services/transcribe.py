@@ -41,7 +41,7 @@ def listen(sample_rate=16000, energy_threshold=None, microphone_index=None):
         try:
             audio = recognizer.listen(source, timeout=10)
         except:
-            return ''
+            return None
 
     folder = "./audio"
     filename = "microphone-results"
@@ -65,6 +65,8 @@ class TranscribeClient(ServiceClient):
 def transcribe() -> str:
     global energy_threshold, microphone_index
     audio_path = listen(energy_threshold=energy_threshold, microphone_index=microphone_index)
+    if not audio_path:
+        return ''
     return transcribe_audio(audio_path)
 
 def start_service():

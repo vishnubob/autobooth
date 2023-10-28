@@ -17,7 +17,8 @@ def play_sound(audio_fn: str) -> bool:
     playsound(audio_fn)
     return True
 
-def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
+#def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
+def do_speak(text=None, model_name='en-US-Neural2-A', language_code='en-US'):
     from google.cloud import texttospeech as tts
     from playsound import playsound
 

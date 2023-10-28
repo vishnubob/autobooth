@@ -6,6 +6,7 @@ from . prompts import get_prompt, list_prompts
 def get_random_prompt():
     prompts = list_prompts()
     prompt_name = random.choice(prompts)
+    print(f"Running {prompt_name} prompt.")
     return get_prompt(prompt_name)
 
 class PhotoboothDialog:

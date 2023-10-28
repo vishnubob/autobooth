@@ -10,6 +10,7 @@ from . services.transcribe import TranscribeClient
 from . dialog import PhotoboothDialog
 from . imagegen import generate_composite
 from . data import get_data_path
+from . delay import DelayedTask
 
 listening_path = get_data_path("audio", "listening.mp3")
 not_listening_path = get_data_path("audio", "not_listening.mp3")
@@ -71,14 +72,20 @@ def run_dialog(people_count=None):
             user_message = transcribe()
         print(user_message)
 
-def run():
-    print("running")
-    while True:
+def loop():
+    print("loop()")
+    flash_warmup = DelayedTask(30 * 60, capture)
+    flash_warmup.start()
+    people_count = 0
+    while people_count <= 0:
+        time.sleep(1)
         people_count = get_people_count()
-        if people_count > 0:
-            run_dialog(people_count=people_count)
-        else:
-            time.sleep(1)
+    flash_warmup.cancel()
+    run_dialog(people_count=people_count)
+
+def run():
+    while True:
+        loop()
 
 if __name__ == "__main__":
     run()
