@@ -29,7 +29,7 @@ steps = [
         assistant_message=AssistantMessage(message="Ah, 'Jurassic Park', a classic! Now, embody a scene where you’re all fearless dinosaur tamers, cautiously maneuvering through a reptile infested jungle. Signal with 'ready' when set.", waiting_on="ready", continue_session=True)
     ),
     Step(
-        title="Once the Participants are Ready, Craft Amusingly Unrelated Background and Celebrate & Disclose the Comic Twist",
+        title="Once the Participants are Ready, Craft Amusing Background and Celebrate",
         user_message=UserMessage(message="Ready!", people_count=5),
         assistant_message=AssistantMessage(
             message="Bravo, courageous tamers of the dino-disco! Your jungle journey took an unexpected twist into a prehistoric party! Shall we embark on another amusingly deceptive adventure?",

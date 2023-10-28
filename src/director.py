@@ -9,6 +9,10 @@ from . services.speech import SpeechClient
 from . services.transcribe import TranscribeClient
 from . dialog import PhotoboothDialog
 from . imagegen import generate_composite
+from . data import get_data_path
+
+listening_path = get_data_path("audio", "listening.mp3")
+not_listening_path = get_data_path("audio", "not_listening.mp3")
 
 presence_service = PresenceClient()
 camera_service = CameraClient()
@@ -26,7 +30,10 @@ def speak(text):
 
 def transcribe():
     print("transcribing...")
-    return transcribe_service("transcribe", None)
+    speech_service("play_sound", listening_path)
+    resp = transcribe_service("transcribe", None)
+    speech_service("play_sound", not_listening_path)
+    return resp
 
 def capture():
     print("capturing...")
