@@ -135,10 +135,12 @@ def run_yolo(person_count):
             now = time.time()
             result = result.cpu().numpy()
             cls_conf = list(zip(result.boxes.cls, result.boxes.conf))
-            conf_list = [it[1] for it in cls_conf if (it[0] == person_cls)]
-            counter.add_observation(conf_list)
+            conf_list = [it[1] for it in cls_conf if (it[0] == person_cls and it[1] > conf_cutoff)]
+            count = len(conf_list)
+            #counter.add_observation(conf_list)
             if (time.time() - last_read) >= read_cycle:
-                to_value.set_value(counter.get_count())
+                #to_value.set_value(counter.get_count())
+                to_value.set_value(count)
                 person_count.value = to_value.get_value()
                 last_read = time.time()
             sleep_delay = delay - (time.time() - now)
