@@ -9,7 +9,7 @@ class Canvas(object):
     DefaultResolution = (1920, 1080)
     screen = None
     
-    def __init__(self, frame_rate=60):
+    def __init__(self, frame_rate=20):
         self.frame_rate = frame_rate
         self.init_pygame()
         
@@ -75,6 +75,7 @@ class DisplayController(object):
         rect = img.get_rect(center=(screen_rect.centerx, screen_rect.centery))
         self.buffer.fill(pg.Color("black"))
         self.buffer.blit(img, rect)
+        del img
 
     def display_text(self, text):
         surface = self.font.render(text, True, pg.Color("dodgerblue"))
