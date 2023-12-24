@@ -16,7 +16,7 @@ def get_microphone_index(device="USB"):
     matches = [(idx, nm) for (idx, nm) in enumerate(sr.Microphone.list_microphone_names()) if device in nm]
     return matches[0][0]
 
-def get_energy_threshold(sample_rate=16000, microphone_index=None):
+def get_energy_threshold(sample_rate=44100, microphone_index=None):
     if microphone_index is None:
         microphone_index = get_microphone_index()
     #with sr.Microphone(device_index=microphone_index, sample_rate=sample_rate) as source:
@@ -27,12 +27,12 @@ def get_energy_threshold(sample_rate=16000, microphone_index=None):
         rec.adjust_for_ambient_noise(source)
     return rec.energy_threshold
 
-def listen(sample_rate=16000, energy_threshold=None, microphone_index=None):
+def listen(sample_rate=44100, chunk_size=1024, energy_threshold=None, microphone_index=None):
     if microphone_index is None:
         microphone_index = get_microphone_index()
     #with sr.Microphone() as source:
     #with sr.Microphone(device_index=microphone_index) as source:
-    with sr.Microphone(device_index=microphone_index, sample_rate=sample_rate, chunk_size=512) as source:
+    with sr.Microphone(device_index=microphone_index, sample_rate=sample_rate, chunk_size=chunk_size) as source:
         recognizer = sr.Recognizer()
         if energy_threshold is None:
             recognizer.adjust_for_ambient_noise(source)
