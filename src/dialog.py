@@ -1,5 +1,7 @@
 import random
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 from . prompts.models import *
 from . prompts import get_prompt, list_prompts
 
@@ -16,16 +18,20 @@ class PhotoboothDialog:
         self.messages = [{"role": "system", "content": prompt}]
 
     def parse_completion(self, completion):
-        response = completion['choices'][0]['message']
+        from pprint import pprint
+        response = completion.choices[0].message
+        pprint(response)
         self.messages.append(response)
-        return AssistantMessage.parse_raw(response['content'])
+        return AssistantMessage.parse_raw(response.content)
 
     def generate_response(self):
-        completion = openai.ChatCompletion.create(
-            model="gpt-4-0613",
-            #model="gpt-3.5-turbo-0613",
+        #model="gpt-3.5-turbo-0613",
+        #model="gpt-4-0613"
+        model = "gpt-4-1106-preview"
+        completion = client.chat.completions.create(
+            model=model,
             temperature=1.0,
-            messages=self.messages,
+            messages=self.messages
         )
         return completion
 

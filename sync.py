@@ -67,7 +67,7 @@ class PiwigoConnector(object):
 
 if __name__ == '__main__':
     base_url = "http://localhost"
-    user = "photobooth"
-    password = "photobooth"
+    user = "admin"
+    password = "admin"
     
     PiwigoConnector(base_url, user, password).sync()

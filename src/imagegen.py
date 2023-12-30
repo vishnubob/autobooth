@@ -44,19 +44,26 @@ def download_image_to_pil(url):
 
 def generate_image_controlnet(prompt, num_inference_steps=20, **kw):
     print("Generating new background")
-    model = 'lucataco/sdxl-controlnet:06d6fae3b75ab68a28cd2900afa6033166910dd09fd9751047043a5bbb4c184b'
+    #model = 'lucataco/sdxl-controlnet:06d6fae3b75ab68a28cd2900afa6033166910dd09fd9751047043a5bbb4c184b'
+    model = "vishnubob/controlnet"
     kw['prompt'] = prompt
     kw['num_inference_steps'] = num_inference_steps
-    url = replicate.run(model, input=kw)
-    img = download_image_to_pil(url)
+    deployment = replicate.deployments.get(model)
+    prediction = deployment.predictions.create(input=kw)
+    prediction.wait()
+    img = download_image_to_pil(prediction.output)
     return img
 
 def remove_background(**kw):
     print("Removing background")
-    model = "ilkerc/rembg:e809cddc666ccfd38a044f795cf65baab62eedc4273d096bf05935b9a3059b59"
+    #model = "ilkerc/rembg:e809cddc666ccfd38a044f795cf65baab62eedc4273d096bf05935b9a3059b59"
+    #url = replicate.run(model, input=kw)
+    model = "vishnubob/rembg"
     kw['alpha_matting'] = True
-    url = replicate.run(model, input=kw)
-    img = download_image_to_pil(url)
+    deployment = replicate.deployments.get(model)
+    prediction = deployment.predictions.create(input=kw)
+    prediction.wait()
+    img = download_image_to_pil(prediction.output)
     return img
 
 def generate_image(prompt, num_inference_steps=20, refiner='expert_ensemble_refiner', **kw):
@@ -80,13 +87,6 @@ def generate_composite(img_fn, prompt):
         fg_img.save(str(fg_img_path), format="png")
         fg_img_nobg = remove_background(image=fg_img_path)
 
-    #rembg_session = new_session('u2net_human_seg')
-    #print('remove')
-    #fg_img_nobg = remove(
-        #fg_img,
-        #matte=True,
-        #session=rembg_session
-    #)
     fg_mask = np.array(fg_img_nobg, dtype=np.uint8)
     fg_mask = np.squeeze(fg_mask[..., -1])
     thresh = threshold_otsu(fg_mask)

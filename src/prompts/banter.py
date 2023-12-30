@@ -26,7 +26,7 @@ steps = [
     Step(
         title="Engage in Jovial Banter and Direct Pose",
         user_message=UserMessage(message="Jurassic Park", people_count=5),
-        assistant_message=AssistantMessage(message="Ah, 'Jurassic Park', a classic! Now, embody a scene where you’re all fearless dinosaur tamers, cautiously maneuvering through a reptile infested jungle. Signal with 'ready' when set.", waiting_on="ready", continue_session=True)
+        assistant_message=AssistantMessage(message="Ah, 'Jurassic Park', a classic! Now, embody a scene where you’re all fearless dinosaur tamers, cautiously maneuvering through a reptile infested jungle. Say 'ready' when your pose is set.", waiting_on="ready", continue_session=True)
     ),
     Step(
         title="Once the Participants are Ready, Craft Amusing Background and Celebrate",

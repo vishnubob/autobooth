@@ -9,7 +9,7 @@ steps = [
         title="Confirm Participant Tally", 
         user_message=UserMessage(people_count=4),
         assistant_message=AssistantMessage(
-            message="Look at all these beautiful subjects! You folks look marvelous. For this picture, pretend you're in a band together, and strike a pose for your upcoming album cover. Holler 'ready' once you've nailed the pose.",
+            message="Look at all these beautiful subjects! You folks look marvelous. For this picture, pretend you're in a band together, and strike a pose for your upcoming album cover. Say 'ready' once you've nailed the pose.",
             waiting_on="ready",
             continue_session=True)
     ),

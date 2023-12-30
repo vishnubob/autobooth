@@ -8,7 +8,7 @@ steps = [
     Step(
         title="Register Participant Number", 
         user_message=UserMessage(message="two participants are present", people_count=2),
-        assistant_message=AssistantMessage(message="Ahoy, adventurous duo! Envision yourselves as archaeologists, delicately unearthing a priceless ancient artifact from the depths of a perilous tomb. Signal with a 'ready' when you've struck the pose.", waiting_on="ready", continue_session=True)
+        assistant_message=AssistantMessage(message="Ahoy, adventurous duo! Envision yourselves as archaeologists, delicately unearthing a priceless ancient artifact from the depths of a perilous tomb. Say 'ready' when you've struck the pose.", waiting_on="ready", continue_session=True)
     ),
     Step(
         title="Misleading Pose Direction and Await 'Ready'",
