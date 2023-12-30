@@ -1,0 +1,14 @@
+python-dotenv
+SpeechRecognition
+openai
+zeroapi
+redis
+PyAudio
+playsound
+sudo apt install pkg-config libcairo2-dev gcc python3-dev libgirepository1.0-dev
+PyGObject
+
+exifread
+replicate
+jinja2
+pillow
