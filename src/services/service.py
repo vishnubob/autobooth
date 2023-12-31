@@ -4,6 +4,9 @@ import threading
 from zero import ZeroServer, ZeroClient
 from . registry import ServiceRegistry
 
+#DEFAULT_REGISTRY_HOST = 'redis.lan'
+DEFAULT_REGISTRY_HOST = '0.0.0.0'
+
 def get_host_ip_and_port():
     # Determine local machine's IP
     host_name = socket.gethostname()
@@ -27,7 +30,7 @@ class Service:
             cls._instance = super(Service, cls).__new__(cls)
         return cls._instance
 
-    def __init__(self, service_name=None, host=None, port=None, registry_host='redis', registry_port=6379):
+    def __init__(self, service_name=None, host=None, port=None, registry_host=DEFAULT_REGISTRY_HOST, registry_port=6379):
         if self.__class__._initialized:
             return
         self.service_name = service_name or self.ServiceName
@@ -88,7 +91,7 @@ class ServiceClient:
     ServiceName = None
     DefaultTimeout = 5000
 
-    def __init__(self, registry_host='redis.lan', registry_port=6379):
+    def __init__(self, registry_host=DEFAULT_REGISTRY_HOST, registry_port=6379):
         self.registry = ServiceRegistry(redis_host=registry_host, redis_port=registry_port)
         self.host, self.port = self.lookup_service_details()
         self.zero_client = ZeroClient(self.host, self.port, default_timeout=self.DefaultTimeout)
