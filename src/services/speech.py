@@ -1,5 +1,6 @@
 import os
 import time
+from openai import OpenAI
 from . service import Service, ServiceClient
 
 class SpeechService(Service):
@@ -25,6 +26,20 @@ def play_sound(audio_fn: str) -> bool:
 
 #def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
 def do_speak(text=None, model_name='en-US-Neural2-A', language_code='en-US'):
+    client = OpenAI()
+
+    response = client.audio.speech.create(
+        model="tts-1",
+        voice="alloy",
+        input=text
+    )
+
+    output_fn = '/tmp/tts.mp3'
+    response.stream_to_file(output_fn)
+    play_sound(output_fn)
+
+#def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
+def _do_speak(text=None, model_name='en-US-Neural2-A', language_code='en-US'):
     from google.cloud import texttospeech as tts
 
     client = tts.TextToSpeechClient()

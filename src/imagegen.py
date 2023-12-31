@@ -1,3 +1,4 @@
+import os
 import replicate
 import requests
 from PIL import Image
@@ -107,6 +108,13 @@ def generate_composite(img_fn, prompt):
     comp_img.save(target_fn)
     print(f"Returning composite at {target_fn}")
     return target_fn
+
+def warmup():
+    img = Image.new('RGB', (512, 512))
+    img.save('/tmp/warmup.png')
+    warmup = generate_composite('/tmp/warmup.png', 'nothing')
+    os.unlink(warmup)
+
 
 if __name__ == "__main__":
     img_fn = "/nfs/photobooth/captures/capture_Oct21-2023_23-51-59.jpg"

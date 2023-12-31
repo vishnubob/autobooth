@@ -1,6 +1,7 @@
 import random
 import time
 from pprint import pprint
+import traceback as tb
 
 from . services.presence import PresenceClient
 from . services.camera import CameraClient
@@ -8,7 +9,7 @@ from . services.display import DisplayClient
 from . services.speech import SpeechClient
 from . services.transcribe import TranscribeClient
 from . dialog import PhotoboothDialog
-from . imagegen import generate_composite
+from . imagegen import generate_composite, warmup
 from . data import get_data_path
 from . delay import DelayedTask
 
@@ -32,7 +33,7 @@ def speak(text):
 def transcribe():
     print("transcribing...")
     speech_service("play_sound", listening_path)
-    resp = transcribe_service("transcribe", None)
+    resp = transcribe_service("transcribe", (None, None))
     speech_service("play_sound", not_listening_path)
     return resp
 
@@ -43,6 +44,9 @@ def capture():
 def display_image(img_fn):
     print("displaying image...")
     return display_service("display_image", img_fn)
+
+def clear_display():
+    display_image('/nfs/photobooth/data/plain-black-background.jpg')
 
 def run_dialog(people_count=None):
     dialog = PhotoboothDialog()
@@ -65,6 +69,7 @@ def run_dialog(people_count=None):
             display_image(comp_fn)
         speak(result.message)
         if result.waiting_on == "ready":
+            clear_display()
             transcribe()
             img_fn = capture()
             user_message = "ready"
@@ -74,6 +79,7 @@ def run_dialog(people_count=None):
 
 def loop():
     print("loop()")
+    clear_display()
     flash_warmup = DelayedTask(30 * 60, capture)
     flash_warmup.start()
     people_count = 0
@@ -85,7 +91,12 @@ def loop():
 
 def run():
     while True:
-        loop()
+        try:
+            loop()
+        except KeyboardInterrupt:
+            break
+        except:
+            tb.print_exc()
 
 if __name__ == "__main__":
     run()

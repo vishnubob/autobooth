@@ -1,5 +1,6 @@
 git+https://github.com/larsimmisch/pyalsaaudio.git
 git+https://git.aubio.org/aubio/aubio/
+pydub
 google-cloud-texttospeech
 gphoto2
 jinja2
@@ -14,3 +15,4 @@ PyGObject
 replicate
 pillow
 playsound
+pygame
