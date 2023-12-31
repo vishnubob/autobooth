@@ -1,9 +1,23 @@
+import time
 import redis
 
+REDIS_DEFAULT_HOST = 'redis.lan'
+
+def connect_redis(**kw):
+    while True:
+        try:
+            redis_client = redis.StrictRedis(**kw, socket_connect_timeout=1)
+            redis_client.ping()
+            return redis_client
+        except redis.exceptions.TimeoutError:
+            print('Redis server is not available, retrying...')
+            time.sleep(1)
+            continue
+
 class ServiceRegistry:
-    def __init__(self, redis_host='redis', redis_port=6379):
-        self.redis = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
-        self.timeout = 10  # 10 seconds
+    def __init__(self, redis_host=REDIS_DEFAULT_HOST, redis_port=6379):
+        self.redis = connect_redis(host=redis_host, port=redis_port, decode_responses=True)
+        self.timeout = 10
 
     def register_service(self, service_name, host, port):
         """
