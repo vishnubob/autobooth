@@ -1,0 +1,16 @@
+git+https://github.com/larsimmisch/pyalsaaudio.git
+git+https://git.aubio.org/aubio/aubio/
+google-cloud-texttospeech
+gphoto2
+jinja2
+numpy
+openai
+python-dotenv
+openai
+zeroapi
+redis
+PyAudio
+PyGObject
+replicate
+pillow
+playsound
