@@ -20,6 +20,10 @@ class AssistantMessage(BaseModel):
     waiting_on: Optional[str] = Field(None)
     generate_background: Optional[GenerateBackground] = Field(None)
 
+# SystemMessage
+class SystemMessage(BaseModel):
+    message: Optional[str] = Field(None)
+
 # UserMessage model
 class UserMessage(BaseModel):
     message: Optional[str] = Field(None)
@@ -30,6 +34,16 @@ class Step(BaseModel):
     title: str
     user_message: UserMessage
     assistant_message: AssistantMessage
+
+class Persona(BaseModel):
+    name: str
+    age: int
+    big_five: List[str]
+    myers_briggs: str
+    humor_style: str
+    disposition: str
+    interests: List[str]
+    gender: str
 
 # Prompt model
 class Prompt(BaseModel):
