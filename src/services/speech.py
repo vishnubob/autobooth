@@ -1,4 +1,5 @@
 import os
+import time
 from . service import Service, ServiceClient
 
 class SpeechService(Service):
@@ -13,14 +14,18 @@ class SpeechClient(ServiceClient):
     #os.system(cmd)
 
 def play_sound(audio_fn: str) -> bool:
-    from playsound import playsound
-    playsound(audio_fn)
+    from pygame import mixer
+    mixer.init()
+    mixer.music.load(audio_fn)
+    mixer.music.play()
+    while mixer.music.get_busy():
+        time.sleep(.1)
+
     return True
 
 #def do_speak(text=None, model_name='en-US-Neural2-H', language_code='en-US'):
 def do_speak(text=None, model_name='en-US-Neural2-A', language_code='en-US'):
     from google.cloud import texttospeech as tts
-    from playsound import playsound
 
     client = tts.TextToSpeechClient()
     synthesis_input = tts.SynthesisInput(text=text)
@@ -41,9 +46,7 @@ def do_speak(text=None, model_name='en-US-Neural2-A', language_code='en-US'):
     output_fn = '/tmp/tts.mp3'
     with open(output_fn, "wb") as out:
         out.write(response.audio_content)
-
-    playsound(output_fn)
-    #play_mp3(output_fn)
+    play_sound(output_fn)
 
 def speak(text: str) -> bool:
     do_speak(text)
