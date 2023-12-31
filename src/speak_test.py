@@ -1,4 +1,4 @@
 from . services.speech import SpeechClient
 
 cli = SpeechClient()
-cli('speak', 'hello world')
+cli('speak', ('hello world', 'nova'))

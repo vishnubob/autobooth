@@ -1,5 +1,5 @@
 from jinja2 import Environment, BaseLoader
-from persona import get_random_persona
+from . persona import get_random_persona
 
 Prompts = {}
 
@@ -24,11 +24,13 @@ Example
 {% endfor %}
 """
 
-def render_prompt(prompt='dynamic', persona=None):
+def render_prompt(prompt_name='dynamic', persona=None):
+    global Prompts
+    prompt = Prompts[prompt_name]
     template = Environment(loader=BaseLoader).from_string(PROMPT_TEMPLATE)
     persona = persona or get_random_persona()
     return template.render(preamble=prompt.preamble, steps=prompt.steps, persona=persona)
 
 def add_prompt(prompt):
     global Prompts
-    Prompts[prompt.name] = render_prompt(prompt)
+    Prompts[prompt.name] = prompt

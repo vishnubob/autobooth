@@ -23,18 +23,18 @@ speech_service = SpeechClient()
 transcribe_service = TranscribeClient()
 
 def get_people_count():
+    return 1
     return presence_service("get_person_count", None)
-    #return 1
 
-def speak(text):
-    print("speaking...")
-    return speech_service("speak", text)
+def speak(text, voice_model):
+    print(f"speaking with voice model {voice_model}...")
+    return speech_service("speak", (text, voice_model))
 
 def transcribe():
     print("transcribing...")
-    speech_service("play_sound", listening_path)
+    #speech_service("play_sound", listening_path)
     resp = transcribe_service("transcribe", (None, None))
-    speech_service("play_sound", not_listening_path)
+    #speech_service("play_sound", not_listening_path)
     return resp
 
 def capture():
@@ -67,7 +67,7 @@ def run_dialog(people_count=None):
             prompt = result.generate_background.prompt
             comp_fn = generate_composite(img_fn, prompt)
             display_image(comp_fn)
-        speak(result.message)
+        speak(result.message, dialog.voice_model)
         if result.waiting_on == "ready":
             clear_display()
             transcribe()

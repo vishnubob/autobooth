@@ -1,24 +1,22 @@
 import random
 from openai import OpenAI
+from pprint import pprint
 
 client = OpenAI()
 from . prompts.models import *
-from . prompts import get_prompt, list_prompts
-
-def get_random_prompt():
-    prompts = list_prompts()
-    prompt_name = random.choice(prompts)
-    print(f"Running {prompt_name} prompt.")
-    return get_prompt(prompt_name)
+from . prompts import build_prompt
 
 class PhotoboothDialog:
-    def __init__(self, prompt=None):
-        if prompt is None:
-            prompt = get_random_prompt()
-        self.messages = [{"role": "system", "content": prompt}]
+    def __init__(self, prompt_info=None):
+        self.prompt_info = prompt_info or build_prompt()
+        print(self.prompt_info['prompt'])
+        self.messages = [{"role": "system", "content": self.prompt_info['prompt']}]
+
+    @property
+    def voice_model(self):
+        return self.prompt_info['voice_model']
 
     def parse_completion(self, completion):
-        from pprint import pprint
         response = completion.choices[0].message
         pprint(response)
         self.messages.append(response)

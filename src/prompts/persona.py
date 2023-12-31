@@ -1,13 +1,13 @@
 import os
 import json
 import random
-from models import Persona
+from . models import Persona
 
 rootdir, _ = os.path.split(os.path.abspath(__file__))
 
 GenderVoiceMap = {
-    'male': ['Alloy', 'Echo', 'Fable', 'Onyx'],
-    'female': ['Nova', 'Shimmer']
+    'male': ['alloy', 'echo', 'fable', 'onyx'],
+    'female': ['nova', 'shimmer']
 }
 
 def get_voice_model(gender):
