@@ -48,7 +48,7 @@ class ServiceRegistry:
         if value:
             host, port = value.split(":")
             return host, int(port)
-        return None
+        return (None, None)
 
     def is_service_active(self, service_name):
         """

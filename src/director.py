@@ -2,6 +2,7 @@ import random
 import time
 from pprint import pprint
 import traceback as tb
+import sys
 
 from . services.presence import PresenceClient
 from . services.camera import CameraClient
@@ -23,7 +24,7 @@ speech_service = SpeechClient()
 transcribe_service = TranscribeClient()
 
 def get_people_count():
-    return 1
+    #return 1
     return presence_service("get_person_count", None)
 
 def speak(text, voice_model):
@@ -54,39 +55,40 @@ def run_dialog(people_count=None):
     user_message = None
     while True:
         people_count = get_people_count()
-        if people_count == 0:
-            print("No people")
-            break
         result = dialog.get_response(people_count=people_count, message=user_message)
         pprint(result)
-        if not result.continue_session:
-            print("Result closed session")
-            break
         if result.generate_background: 
-            #img_fn = capture()
+            img_fn = capture()
             prompt = result.generate_background.prompt
             comp_fn = generate_composite(img_fn, prompt)
             display_image(comp_fn)
         speak(result.message, dialog.voice_model)
+        if not result.continue_session:
+            print("Result closed session")
+            break
+        if people_count == 0:
+            print("No people")
+            break
         if result.waiting_on == "ready":
             clear_display()
             transcribe()
-            img_fn = capture()
+            #img_fn = capture()
             user_message = "ready"
         else:
             user_message = transcribe()
         print(user_message)
 
 def loop():
+    sys.stdout.flush()
     print("loop()")
     clear_display()
-    flash_warmup = DelayedTask(30 * 60, capture)
-    flash_warmup.start()
+    #flash_warmup = DelayedTask(30 * 60, capture)
+    #flash_warmup.start()
     people_count = 0
     while people_count <= 0:
         time.sleep(1)
         people_count = get_people_count()
-    flash_warmup.cancel()
+    #flash_warmup.cancel()
     run_dialog(people_count=people_count)
 
 def run():

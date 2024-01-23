@@ -44,14 +44,20 @@ class Persona(BaseModel):
     disposition: str
     interests: List[str]
     gender: str
+    
+    def __str__(self):
+        return \
+f"""Name: {self.name}
+Age: {self.age}
+Big 5 Personality Traits: {self.big_five}
+Myers Briggs: {self.myers_briggs}
+Humor Style: {self.humor_style}
+Disposition: {self.disposition}
+Gender: {self.gender}"""
+
 
 # Prompt model
 class Prompt(BaseModel):
     name: str
     preamble: Preamble
-    steps: List[Step]
-
-    # You'd still need to define your render method and associated logic here, just like in your original class.
-    def render(self):
-        template = Environment(loader=BaseLoader).from_string(PROMPT_TEMPLATE)
-        return template.render(preamble=self.preamble, steps=self.steps)
+    example_sessions: List[List[Step]]

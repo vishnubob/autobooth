@@ -24,7 +24,7 @@ DEFAULT_DEVICE = 'default'
 DEFAULT_CAPTURE_LEVEL = .9
 DEFAULT_FRAMES_PER_CHUNK = 2048
 DEFAULT_PITCH_RANGE = [85, 255]
-DEFAULT_SPEECH_TIMEOUT = 1.5
+DEFAULT_SPEECH_TIMEOUT = 1
 DEFAULT_ABSOLUTE_TIMEOUT = 10
 DEFAULT_SILENCE_LEVEL_DB = -40
 
@@ -222,7 +222,7 @@ class TranscribeAudioSource:
         while True:
             if absolute_timer.is_expired:
                 print('absolute timer expired')
-                return ''
+                break
             frames = self.record_buffer.get()
             pitch = self.pitcher(frames)[0]
             if buffer is None:
@@ -244,9 +244,10 @@ class TranscribeAudioSource:
                 continue
             if speech_timer.is_expired:
                 break
-        wav_path = wav_file.write(buffer)
-        transcript = self.transcribe_audio(wav_path).strip()
-        return transcript
+        if speech_detected:
+            wav_path = wav_file.write(buffer)
+            transcript = self.transcribe_audio(wav_path).strip()
+            return transcript
 
     def transcribe_audio(self, audio_path):
         audio_file = open(audio_path, 'rb')

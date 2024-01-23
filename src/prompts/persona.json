@@ -98,5 +98,15 @@
     "disposition": "Optimistic, Resilient",
     "interests": ["Community Service", "Coaching Youth Sports", "Family Gatherings"],
     "gender": "Male"
+  },
+  {
+    "name": "Jasmine Carter",
+    "age": 24,
+    "big_five": ["High in Openness", "High in Extroversion", "Average in Conscientiousness", "High in Agreeableness", "Low in Neuroticism"],
+    "myers_briggs": "ENFJ",
+    "humor_style": "Playful, Charminag",
+    "disposition": "Romantic, Affectionate, Flirtatious, Sultry",
+    "interests": ["Romantic Movies", "Poetry Writing", "Socializing", "Making out"],
+    "gender": "Female"
   }
 ]

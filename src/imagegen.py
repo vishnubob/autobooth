@@ -45,6 +45,31 @@ def download_image_to_pil(url):
 
 def generate_image_controlnet(prompt, num_inference_steps=20, **kw):
     print("Generating new background")
+    #model = 'lucataco/sdxl-controlnet:06d6fae3b75ab68a28cd2900afa6033166910dd09fd9751047043a5bbb4c184b'
+    model = "vishnubob/controlnet"
+    kw['prompt'] = prompt
+    kw['num_inference_steps'] = num_inference_steps
+    deployment = replicate.deployments.get(model)
+    prediction = deployment.predictions.create(input=kw)
+    prediction.wait()
+    img = download_image_to_pil(prediction.output)
+    return img
+
+def remove_background(**kw):
+    print("Removing background")
+    #model = "ilkerc/rembg:e809cddc666ccfd38a044f795cf65baab62eedc4273d096bf05935b9a3059b59"
+    #url = replicate.run(model, input=kw)
+    model = "vishnubob/rembg"
+    kw['alpha_matting'] = True
+    deployment = replicate.deployments.get(model)
+    prediction = deployment.predictions.create(input=kw)
+    prediction.wait()
+    img = download_image_to_pil(prediction.output)
+    return img
+
+"""
+def generate_image_controlnet(prompt, num_inference_steps=20, **kw):
+    print("Generating new background")
     model = 'lucataco/sdxl-controlnet:06d6fae3b75ab68a28cd2900afa6033166910dd09fd9751047043a5bbb4c184b'
     kw['prompt'] = prompt
     kw['num_inference_steps'] = num_inference_steps
@@ -59,21 +84,15 @@ def remove_background(**kw):
     url = replicate.run(model, input=kw)
     img = download_image_to_pil(url)
     return img
+"""
 
-def generate_image(prompt, num_inference_steps=20, refiner='expert_ensemble_refiner', **kw):
-    model = 'stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316'
-    kw['prompt'] = prompt
-    kw['refiner'] = refiner
-    kw['num_inference_steps'] = num_inference_steps
-    output = replicate.run(model, input=kw)
-    url = output[0]
-    img = download_image_to_pil(url)
-    return img
-
-def generate_composite(img_fn, prompt):
+def generate_composite(img_fn, prompt, rotate=180):
     (path, ext) = img_fn.split('.')
     target_fn = f'{path}-composite.{ext}'
     fg_img = Image.open(img_fn)
+    if rotate:
+        fg_img = fg_img.rotate(rotate)
+
     resolution = (1344, 768)
     fg_img = crop_and_scale_image(fg_img, resolution)
     with TemporaryDirectory() as root:
@@ -114,7 +133,6 @@ def warmup():
     img.save('/tmp/warmup.png')
     warmup = generate_composite('/tmp/warmup.png', 'nothing')
     os.unlink(warmup)
-
 
 if __name__ == "__main__":
     img_fn = "/nfs/photobooth/captures/capture_Oct21-2023_23-51-59.jpg"

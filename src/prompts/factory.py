@@ -1,3 +1,4 @@
+import random
 from jinja2 import Environment, BaseLoader
 from . persona import get_random_persona
 
@@ -8,7 +9,7 @@ PROMPT_TEMPLATE = """
 
 When creating the scenarios, writing the dialog, and interacting with the participants, adopt this persona:
 
-{{ persona.json() }}
+{{ persona }}
 
 In order to coordinate the technical operation of the Photo Booth, you will
 exchange a well formed JSON dictionary with the backend software.  Here is an
@@ -22,6 +23,8 @@ Example
 (from assistant): {{ step.assistant_message.json() }}
 
 {% endfor %}
+
+Always use 'ready' as the keyword for the participants to indicate when they are ready to have their picture taken.
 """
 
 def render_prompt(prompt_name='dynamic', persona=None):
@@ -29,7 +32,8 @@ def render_prompt(prompt_name='dynamic', persona=None):
     prompt = Prompts[prompt_name]
     template = Environment(loader=BaseLoader).from_string(PROMPT_TEMPLATE)
     persona = persona or get_random_persona()
-    return template.render(preamble=prompt.preamble, steps=prompt.steps, persona=persona)
+    steps =  random.choice(prompt.example_sessions)
+    return template.render(preamble=prompt.preamble, steps=steps, persona=persona)
 
 def add_prompt(prompt):
     global Prompts
