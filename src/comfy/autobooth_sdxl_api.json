@@ -1,0 +1,557 @@
+{
+  "5": {
+    "inputs": {
+      "width": [
+        "48",
+        0
+      ],
+      "height": [
+        "48",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "18": {
+    "inputs": {
+      "strength": 1,
+      "conditioning": [
+        "75",
+        0
+      ],
+      "control_net": [
+        "19",
+        0
+      ],
+      "image": [
+        "101",
+        0
+      ]
+    },
+    "class_type": "ControlNetApply",
+    "_meta": {
+      "title": "Apply ControlNet"
+    }
+  },
+  "19": {
+    "inputs": {
+      "control_net_name": "OpenPoseXL2.safetensors",
+      "model": [
+        "74",
+        0
+      ]
+    },
+    "class_type": "DiffControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model (diff)"
+    }
+  },
+  "46": {
+    "inputs": {
+      "image": "capture_Oct28-2023_16-09-47.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "48": {
+    "inputs": {
+      "image": [
+        "58",
+        0
+      ]
+    },
+    "class_type": "Get Image Size (JPS)",
+    "_meta": {
+      "title": "Get Image Size (JPS)"
+    }
+  },
+  "51": {
+    "inputs": {
+      "size": 1920,
+      "interpolation_mode": "bicubic",
+      "image": [
+        "46",
+        0
+      ]
+    },
+    "class_type": "JWImageResizeByLongerSide",
+    "_meta": {
+      "title": "Image Resize by Longer Side"
+    }
+  },
+  "52": {
+    "inputs": {
+      "text": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "53": {
+    "inputs": {
+      "value": [
+        "48",
+        0
+      ],
+      "format_string": "{:04d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String"
+    }
+  },
+  "54": {
+    "inputs": {
+      "text": [
+        "55",
+        0
+      ]
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "55": {
+    "inputs": {
+      "value": [
+        "48",
+        1
+      ],
+      "format_string": "{:04d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String"
+    }
+  },
+  "58": {
+    "inputs": {
+      "mask": [
+        "99",
+        1
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "69": {
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "destination": [
+        "87",
+        0
+      ],
+      "source": [
+        "103",
+        0
+      ],
+      "mask": [
+        "104",
+        0
+      ]
+    },
+    "class_type": "ImageCompositeMasked",
+    "_meta": {
+      "title": "ImageCompositeMasked"
+    }
+  },
+  "70": {
+    "inputs": {
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": 512,
+      "image": [
+        "46",
+        0
+      ]
+    },
+    "class_type": "OpenposePreprocessor",
+    "_meta": {
+      "title": "OpenPose Pose"
+    }
+  },
+  "71": {
+    "inputs": {
+      "strength": 0.9500000000000001,
+      "conditioning": [
+        "18",
+        0
+      ],
+      "control_net": [
+        "72",
+        0
+      ],
+      "image": [
+        "110",
+        0
+      ]
+    },
+    "class_type": "ControlNetApply",
+    "_meta": {
+      "title": "Apply ControlNet"
+    }
+  },
+  "72": {
+    "inputs": {
+      "control_net_name": "diffusers_xl_canny_full.safetensors",
+      "model": [
+        "74",
+        0
+      ]
+    },
+    "class_type": "DiffControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model (diff)"
+    }
+  },
+  "73": {
+    "inputs": {
+      "ckpt_name": {
+        "content": "sd_xl_refiner_1.0.safetensors",
+        "image": null
+      },
+      "example": "[none]"
+    },
+    "class_type": "CheckpointLoader|pysssss",
+    "_meta": {
+      "title": "Checkpoint Loader 🐍"
+    }
+  },
+  "74": {
+    "inputs": {
+      "ckpt_name": {
+        "content": "fantasticCharacters_v55.safetensors",
+        "image": null
+      },
+      "example": "[none]"
+    },
+    "class_type": "CheckpointLoader|pysssss",
+    "_meta": {
+      "title": "Checkpoint Loader 🐍"
+    }
+  },
+  "75": {
+    "inputs": {
+      "width": 1920,
+      "height": 1280,
+      "crop_w": 0,
+      "crop_h": 0,
+      "target_width": 1920,
+      "target_height": 1280,
+      "text_g": "Two chefs cooking in a busy restaurant kitchen",
+      "text_l": "Two chefs cooking in a busy restaurant kitchen",
+      "clip": [
+        "74",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXL",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXL"
+    }
+  },
+  "76": {
+    "inputs": {
+      "ascore": 6,
+      "width": 1920,
+      "height": 1280,
+      "text": "Two chefs cooking in a busy restaurant kitchen",
+      "clip": [
+        "73",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXLRefiner",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXLRefiner"
+    }
+  },
+  "79": {
+    "inputs": {
+      "width": 1920,
+      "height": 1280,
+      "crop_w": 0,
+      "crop_h": 0,
+      "target_width": 1920,
+      "target_height": 1280,
+      "text_g": "bad, distorted, mutated, low quality, NSFW, nudity",
+      "text_l": "bad, distorted, mutated, low quality, NSFW, nudity",
+      "clip": [
+        "74",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXL",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXL"
+    }
+  },
+  "82": {
+    "inputs": {
+      "samples": [
+        "89",
+        0
+      ],
+      "vae": [
+        "111",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "84": {
+    "inputs": {
+      "width": 1920,
+      "height": 1280,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "86": {
+    "inputs": {
+      "ascore": 6,
+      "width": 1920,
+      "height": 1280,
+      "text": "bad, distorted, mutated, low quality, NSFW, nudity",
+      "clip": [
+        "73",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncodeSDXLRefiner",
+    "_meta": {
+      "title": "CLIPTextEncodeSDXLRefiner"
+    }
+  },
+  "87": {
+    "inputs": {
+      "samples": [
+        "91",
+        0
+      ],
+      "vae": [
+        "111",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "89": {
+    "inputs": {
+      "seed": 1028333781911043,
+      "steps": 15,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.07,
+      "model": [
+        "73",
+        0
+      ],
+      "positive": [
+        "76",
+        0
+      ],
+      "negative": [
+        "86",
+        0
+      ],
+      "latent_image": [
+        "108",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "91": {
+    "inputs": {
+      "seed": 796494048830685,
+      "steps": 15,
+      "cfg": 10,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "74",
+        0
+      ],
+      "positive": [
+        "71",
+        0
+      ],
+      "negative": [
+        "79",
+        0
+      ],
+      "latent_image": [
+        "84",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "99": {
+    "inputs": {
+      "model": "u2net",
+      "post_process_mask": "no",
+      "alpha_matting": "yes",
+      "alpha_matting_foreground_threshold": 240,
+      "alpha_matting_background_threshold": 100,
+      "alpha_matting_erode_size": 25,
+      "image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "RemoveBackground",
+    "_meta": {
+      "title": "RemoveBackground"
+    }
+  },
+  "101": {
+    "inputs": {
+      "size": 1920,
+      "interpolation_mode": "bicubic",
+      "image": [
+        "70",
+        0
+      ]
+    },
+    "class_type": "JWImageResizeByLongerSide",
+    "_meta": {
+      "title": "Image Resize by Longer Side"
+    }
+  },
+  "103": {
+    "inputs": {
+      "image": [
+        "99",
+        0
+      ]
+    },
+    "class_type": "SplitImageWithAlpha",
+    "_meta": {
+      "title": "Split Image with Alpha"
+    }
+  },
+  "104": {
+    "inputs": {
+      "mask": [
+        "103",
+        1
+      ]
+    },
+    "class_type": "InvertMask",
+    "_meta": {
+      "title": "InvertMask"
+    }
+  },
+  "108": {
+    "inputs": {
+      "pixels": [
+        "69",
+        0
+      ],
+      "vae": [
+        "111",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  },
+  "109": {
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "destination": [
+        "82",
+        0
+      ],
+      "source": [
+        "103",
+        0
+      ],
+      "mask": [
+        "104",
+        0
+      ]
+    },
+    "class_type": "ImageCompositeMasked",
+    "_meta": {
+      "title": "ImageCompositeMasked"
+    }
+  },
+  "110": {
+    "inputs": {
+      "low_threshold": 100,
+      "high_threshold": 200,
+      "resolution": 512,
+      "image": [
+        "99",
+        0
+      ]
+    },
+    "class_type": "CannyEdgePreprocessor",
+    "_meta": {
+      "title": "Canny Edge"
+    }
+  },
+  "111": {
+    "inputs": {
+      "vae_name": "sdxl_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "113": {
+    "inputs": {
+      "filename_prefix": "autobooth",
+      "images": [
+        "109",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

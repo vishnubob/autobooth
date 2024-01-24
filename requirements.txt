@@ -18,3 +18,6 @@ playsound
 pygame
 exifread
 scikit-image
+websocket-client
+blinker
+requests
