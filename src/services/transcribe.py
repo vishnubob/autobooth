@@ -210,7 +210,8 @@ class TranscribeAudioSource:
         self.pitcher.set_silence(self.silence_level)
 
     def transcribe(self, speech_timeout=None, absolute_timeout=None):
-        print(speech_timeout, absolute_timeout)
+        speech_timeout = speech_timeout or 2
+        absolute_timeout = absolute_timeout or 10
         self.record_buffer.flush()
         buffer = None
         wav_file = TempWavFile()

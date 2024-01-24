@@ -16,20 +16,20 @@ class NodeTree:
                 return result
         return None
 
-import comfy.data
+from . import comfy
 comfy.data.NodeTree = NodeTree
 
 import os
 import threading
 import json
 import time
-from comfy.server import ServerBase, Task
-from comfy.data import History, NodeTree
+from . comfy.server import ServerBase, Task
+from . comfy.data import History, NodeTree
 import blinker
 
 server_address = os.environ.get('COMFY_SERVER_ADDRESS', 'localhost')
 server_port = os.environ.get('COMFY_SERVER_PORT', '8188')
-server = ComfyServer(api_url=server_address, api_port=server_port)
+autobooth_template_jsfn = os.path.join(os.path.dirname(__file__), 'comfy', 'autobooth_sdxl_api.json')
 
 class ComfyServer(threading.Thread):
     def __init__(self, **kwargs):
@@ -56,10 +56,12 @@ class ComfyServer(threading.Thread):
         return Task.upload_image(self.server.server_address, imgfn, overwrite=overwrite)
 
 
+server = ComfyServer(api_url=server_address, url_port=server_port)
 
 def generate_composite(img_fn, prompt):
     if server.server is None:
         server.start()
+        time.sleep(2)
     (path, ext) = img_fn.split('.')
     target_fn = f'{path}-composite.{ext}'
 
@@ -67,8 +69,7 @@ def generate_composite(img_fn, prompt):
     def notify_finish(sender):
         finished.set()
 
-    json_fn = 'autobooth_sdxl_api.json'
-    with open(json_fn) as fh:
+    with open(autobooth_template_jsfn) as fh:
         template = json.load(fh)
 
     style = '35mm photograph, film, professional, 4k, highly detailed, HDR'
@@ -83,7 +84,7 @@ def generate_composite(img_fn, prompt):
     template['79']['inputs']['text_l'] = neg_prompt
     template['86']['inputs']['text'] = neg_prompt
 
-    template['46']['inputs']['image'] = img_fn
+    template['46']['inputs']['image'] = os.path.split(img_fn)[-1]
 
     res = server.upload_image(img_fn)
     server.server.manager.signal_finished.connect(notify_finish)
@@ -95,6 +96,5 @@ def generate_composite(img_fn, prompt):
     server.server.manager.signal_finished.disconnect(notify_finish)
 
     history = server.get_history(prompt_id)
-    history.save_latest_image(prompt, target_fn)
+    history.save_latest_image(template, target_fn)
     return target_fn
-

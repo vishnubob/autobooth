@@ -237,7 +237,7 @@
   "74": {
     "inputs": {
       "ckpt_name": {
-        "content": "fantasticCharacters_v55.safetensors",
+        "content": "sd_xl_base_1.0.safetensors",
         "image": null
       },
       "example": "[none]"
@@ -365,7 +365,7 @@
   "89": {
     "inputs": {
       "seed": 1028333781911043,
-      "steps": 15,
+      "steps": 10,
       "cfg": 7,
       "sampler_name": "euler_ancestral",
       "scheduler": "simple",
@@ -395,7 +395,7 @@
   "91": {
     "inputs": {
       "seed": 796494048830685,
-      "steps": 15,
+      "steps": 20,
       "cfg": 10,
       "sampler_name": "euler_ancestral",
       "scheduler": "simple",
@@ -429,7 +429,7 @@
       "alpha_matting": "yes",
       "alpha_matting_foreground_threshold": 240,
       "alpha_matting_background_threshold": 100,
-      "alpha_matting_erode_size": 25,
+      "alpha_matting_erode_size": 10,
       "image": [
         "51",
         0

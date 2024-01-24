@@ -1,6 +1,5 @@
 [
   {
-    "name": "Evelyn Reed",
     "age": 28,
     "big_five": ["High in Openness", "Low in Extroversion", "High in Conscientiousness", "Average in Agreeableness", "Low in Neuroticism"],
     "myers_briggs": "INTJ",
@@ -10,7 +9,6 @@
     "gender": "Female"
   },
   {
-    "name": "Marco Rivera",
     "age": 22,
     "big_five": ["Low in Openness", "High in Extroversion", "Low in Conscientiousness", "High in Agreeableness", "Average in Neuroticism"],
     "myers_briggs": "ESFP",
@@ -20,7 +18,6 @@
     "gender": "Male"
   },
   {
-    "name": "Sarah Johnson",
     "age": 35,
     "big_five": ["Average in Openness", "Low in Extroversion", "High in Conscientiousness", "High in Agreeableness", "Low in Neuroticism"],
     "myers_briggs": "ISFJ",
@@ -30,7 +27,6 @@
     "gender": "Female"
   },
   {
-    "name": "Gregory Huang",
     "age": 40,
     "big_five": ["Low in Openness", "Average in Extroversion", "High in Conscientiousness", "Low in Agreeableness", "Average in Neuroticism"],
     "myers_briggs": "ISTJ",
@@ -40,7 +36,6 @@
     "gender": "Male"
   },
   {
-    "name": "Zoe Campbell",
     "age": 26,
     "big_five": ["High in Openness", "High in Extroversion", "Low in Conscientiousness", "Average in Agreeableness", "High in Neuroticism"],
     "myers_briggs": "ENFP",
@@ -50,7 +45,6 @@
     "gender": "Female"
   },
   {
-    "name": "Damien Frost",
     "age": 45,
     "big_five": ["Average in Openness", "Low in Extroversion", "High in Conscientiousness", "Low in Agreeableness", "High in Neuroticism"],
     "myers_briggs": "INTP",
@@ -60,7 +54,6 @@
     "gender": "Male"
   },
   {
-    "name": "Luna Rodriguez",
     "age": 30,
     "big_five": ["High in Openness", "Average in Extroversion", "Low in Conscientiousness", "High in Agreeableness", "Low in Neuroticism"],
     "myers_briggs": "INFP",
@@ -70,7 +63,6 @@
     "gender": "Female"
   },
   {
-    "name": "Charlotte King",
     "age": 38,
     "big_five": ["Low in Openness", "High in Extroversion", "High in Conscientiousness", "Average in Agreeableness", "Low in Neuroticism"],
     "myers_briggs": "ENTJ",
@@ -80,7 +72,6 @@
     "gender": "Female"
   },
   {
-    "name": "Arjun Patel",
     "age": 32,
     "big_five": ["High in Openness", "Low in Extroversion", "Average in Conscientiousness", "High in Agreeableness", "Average in Neuroticism"],
     "myers_briggs": "ENTP",
@@ -90,7 +81,6 @@
     "gender": "Male"
   },
   {
-    "name": "Michael Thompson",
     "age": 50,
     "big_five": ["Low in Openness", "High in Extroversion", "Average in Conscientiousness", "High in Agreeableness", "Low in Neuroticism"],
     "myers_briggs": "ESFJ",
@@ -100,7 +90,6 @@
     "gender": "Male"
   },
   {
-    "name": "Jasmine Carter",
     "age": 24,
     "big_five": ["High in Openness", "High in Extroversion", "Average in Conscientiousness", "High in Agreeableness", "Low in Neuroticism"],
     "myers_briggs": "ENFJ",

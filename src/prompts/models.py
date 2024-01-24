@@ -36,7 +36,6 @@ class Step(BaseModel):
     assistant_message: AssistantMessage
 
 class Persona(BaseModel):
-    name: str
     age: int
     big_five: List[str]
     myers_briggs: str
@@ -47,8 +46,7 @@ class Persona(BaseModel):
     
     def __str__(self):
         return \
-f"""Name: {self.name}
-Age: {self.age}
+f"""Age: {self.age}
 Big 5 Personality Traits: {self.big_five}
 Myers Briggs: {self.myers_briggs}
 Humor Style: {self.humor_style}

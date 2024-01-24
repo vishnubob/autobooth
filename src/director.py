@@ -10,7 +10,7 @@ from . services.display import DisplayClient
 from . services.speech import SpeechClient
 from . services.transcribe import TranscribeClient
 from . dialog import PhotoboothDialog
-from . imagegen import generate_composite, warmup
+from . imagegen import generate_composite
 from . data import get_data_path
 from . delay import DelayedTask
 
@@ -46,6 +46,10 @@ def display_image(img_fn):
     print("displaying image...")
     return display_service("display_image", img_fn)
 
+def display_text(text):
+    print("displaying text...")
+    return display_service("display_text", text)
+
 def clear_display():
     display_image('/nfs/photobooth/data/plain-black-background.jpg')
 
@@ -58,7 +62,7 @@ def run_dialog(people_count=None):
         result = dialog.get_response(people_count=people_count, message=user_message)
         pprint(result)
         if result.generate_background: 
-            img_fn = capture()
+            #img_fn = capture()
             prompt = result.generate_background.prompt
             comp_fn = generate_composite(img_fn, prompt)
             display_image(comp_fn)
@@ -72,8 +76,9 @@ def run_dialog(people_count=None):
         if result.waiting_on == "ready":
             clear_display()
             transcribe()
-            #img_fn = capture()
+            img_fn = capture()
             user_message = "ready"
+            display_text('Please wait...')
         else:
             user_message = transcribe()
         print(user_message)
@@ -90,6 +95,8 @@ def loop():
         people_count = get_people_count()
     #flash_warmup.cancel()
     run_dialog(people_count=people_count)
+    # cool down
+    time.sleep(5)
 
 def run():
     while True:
@@ -99,6 +106,8 @@ def run():
             break
         except:
             tb.print_exc()
+            speak("Sorry, the photobooth software crashed.  Resetting.", "echo")
+            time.sleep(5)
 
 if __name__ == "__main__":
     run()
