@@ -70,9 +70,9 @@ def run_dialog(people_count=None):
         if not result.continue_session:
             print("Result closed session")
             break
-        if people_count == 0:
-            print("No people")
-            break
+        #if people_count == 0:
+            #print("No people")
+            #break
         if result.waiting_on == "ready":
             clear_display()
             transcribe()
